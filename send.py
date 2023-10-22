@@ -1,9 +1,12 @@
-import datetime
-
+from azure.eventhub import EventHubProducerClient, EventData
 import requests
 
 
-def get_top_dataengineering_posts(limit=10):
+EVENT_HUB_CONNECTION_STR = "Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c="
+EVENT_HUB_NAME = "evh-api-dev-we-tpiuolab-ms-01"
+
+
+def get_top_data_engineering_posts(limit=10):
     # Define the URL for the Reddit API endpoint
     url = f"https://www.reddit.com/r/dataengineering/top.json?limit={limit}"
 
@@ -19,7 +22,7 @@ def get_top_dataengineering_posts(limit=10):
             # Extract and display the top posts
             if 'data' in data and 'children' in data['data']:
                 top_posts = data['data']['children']
-                i = 1
+                '''
                 for post in top_posts:
                     print(f"#{i}")
                     # print(f"Score: {post['data']['score']}")
@@ -29,7 +32,8 @@ def get_top_dataengineering_posts(limit=10):
                     print(post['data']['title'])
                     print(post['data']['selftext'])
                     print("--------------------------------------------------")
-                    i += 1
+                '''
+                return top_posts
             else:
                 print("No post data found.")
         else:
@@ -37,7 +41,31 @@ def get_top_dataengineering_posts(limit=10):
 
     except requests.RequestException as e:
         print(f"An error occurred: {e}")
+    
+
+def send():
+    # Get the top 10 posts from the data engineering subreddit
+    top_10_posts = get_top_data_engineering_posts(10)
+
+    # Create a producer client to send messages to the event hub.
+    producer = EventHubProducerClient.from_connection_string(
+        conn_str=EVENT_HUB_CONNECTION_STR, eventhub_name=EVENT_HUB_NAME
+    )
+
+    # Create a batch.
+    event_data_batch = producer.create_batch()
+
+    # Add events to the batch.
+    event_data_batch.add(EventData(str(top_10_posts)))
+
+    # Send the batch of events to the event hub.
+    with producer:
+        producer.send_batch(event_data_batch)
+
+    # Close the producer.
+    producer.close()
 
 
 if __name__ == "__main__":
-    get_top_dataengineering_posts()
+    send()
+    print("Done sending data.")
