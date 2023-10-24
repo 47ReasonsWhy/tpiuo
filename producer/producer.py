@@ -1,12 +1,16 @@
-from azure.eventhub import EventHubProducerClient, EventData
+import asyncio
+import os
 import requests
 
+from azure.eventhub import EventData
+from azure.eventhub.aio import EventHubProducerClient
 
-EVENT_HUB_CONNECTION_STR = "Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c="
-EVENT_HUB_NAME = "evh-api-dev-we-tpiuolab-ms-01"
+
+EVENT_HUB_CONNECTION_STR = str(os.environ["EVENT_HUB_CONNECTION_STR"])
+EVENT_HUB_NAME = str(os.environ["EVENT_HUB_NAME"])
 
 
-def get_top_data_engineering_posts(limit=10):
+async def get_top_data_engineering_posts(limit=10):
     # Define the URL for the Reddit API endpoint
     url = f"https://www.reddit.com/r/dataengineering/top.json?limit={limit}"
 
@@ -43,29 +47,27 @@ def get_top_data_engineering_posts(limit=10):
         print(f"An error occurred: {e}")
     
 
-def send():
+async def produce():
     # Get the top 10 posts from the data engineering subreddit
-    top_10_posts = get_top_data_engineering_posts(10)
+    top_10_posts = await get_top_data_engineering_posts(10)
 
     # Create a producer client to send messages to the event hub.
     producer = EventHubProducerClient.from_connection_string(
         conn_str=EVENT_HUB_CONNECTION_STR, eventhub_name=EVENT_HUB_NAME
     )
 
-    # Create a batch.
-    event_data_batch = producer.create_batch()
+    async with producer:
+        # Create a batch.
+        event_data_batch = await producer.create_batch()
 
-    # Add events to the batch.
-    event_data_batch.add(EventData(str(top_10_posts)))
+        # Add events to the batch.
+        event_data_batch.add(EventData(str(top_10_posts)))
 
-    # Send the batch of events to the event hub.
-    with producer:
-        producer.send_batch(event_data_batch)
-
-    # Close the producer.
-    producer.close()
+        # Send the batch of events to the event hub.
+        await producer.send_batch(event_data_batch)
 
 
 if __name__ == "__main__":
-    send()
-    print("Done sending data.")
+    asyncio.run(produce())
+    while True:
+        pass

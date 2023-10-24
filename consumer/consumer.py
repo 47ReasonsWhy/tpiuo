@@ -1,9 +1,10 @@
 import asyncio
+import os
 
 from azure.eventhub.aio import EventHubConsumerClient
 
-EVENT_HUB_CONNECTION_STR = "Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c="
-EVENT_HUB_NAME = "evh-api-dev-we-tpiuolab-ms-01"
+EVENT_HUB_CONNECTION_STR = str(os.environ["EVENT_HUB_CONNECTION_STR"])
+EVENT_HUB_NAME = str(os.environ["EVENT_HUB_NAME"])
 
 
 async def on_event(partition_context, event):
@@ -18,7 +19,7 @@ async def on_event(partition_context, event):
     # that it has already read when you run it next time.
     await partition_context.update_checkpoint(event)
 
-async def main():
+async def consume():
 
     # Create a consumer client for the event hub.
     client = EventHubConsumerClient.from_connection_string(
@@ -32,6 +33,7 @@ async def main():
         await client.receive(on_event=on_event, starting_position="-1")
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     # Run the main method.
-    loop.run_until_complete(main())
+    loop.run_until_complete(consume())
