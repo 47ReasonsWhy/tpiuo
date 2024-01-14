@@ -24,9 +24,9 @@ async def get_top_data_engineering_posts(limit=10):
             data = response.json()
 
             # Extract and display the top posts
-            if 'data' in data and 'children' in data['data']:
-                top_posts = data['data']['children']
-                '''
+            if "data" in data and "children" in data["data"]:
+                top_posts = data["data"]["children"]
+                """
                 for post in top_posts:
                     print(f"#{i}")
                     # print(f"Score: {post['data']['score']}")
@@ -36,7 +36,7 @@ async def get_top_data_engineering_posts(limit=10):
                     print(post['data']['title'])
                     print(post['data']['selftext'])
                     print("--------------------------------------------------")
-                '''
+                """
                 return top_posts
             else:
                 print("No post data found.")
@@ -45,7 +45,7 @@ async def get_top_data_engineering_posts(limit=10):
 
     except requests.RequestException as e:
         print(f"An error occurred: {e}")
-    
+
 
 async def produce():
     # Get the top 10 posts from the data engineering subreddit
