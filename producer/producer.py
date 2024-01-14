@@ -37,7 +37,6 @@ async def get_top_data_engineering_posts(limit=10):
                     print(post['data']['selftext'])
                     print("--------------------------------------------------")
                 '''
-                print("Top posts retrieved successfully.")
                 return top_posts
             else:
                 print("No post data found.")
