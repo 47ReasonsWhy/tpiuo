@@ -70,4 +70,4 @@ jobs:
           acrName: TPIUORedditApiLab1
           resourceGroup: fervjestina
           containerAppName: producer
-          environmentVariables: EVENT_HUB_NAME="evh-redditapi-dev-we-tpiuolab-ms-01" EVENT_HUB_CONNECTION_STR="Endpoint=sb://evhns-dev-hr-tpiuo-ms-01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=WOVOO4BrzTTqxF9K+AlYbpOEFgqffjVU9+AEhA0MxUc="
+          environmentVariables: EVENT_HUB_NAME=${{ secrets.EVENT_HUB_NAME }}} EVENT_HUB_CONNECTION_STR=${{ secrets.EVENT_HUB_CONNECTION_STR }}
