@@ -4,9 +4,8 @@ import requests
 from azure.eventhub import EventData
 from azure.eventhub.aio import EventHubProducerClient
 
-
-EVENT_HUB_CONNECTION_STR = "evh-redditapi-dev-we-tpiuolab-ms-01"
-EVENT_HUB_NAME = "Endpoint=sb://evhns-dev-hr-tpiuo-ms-01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=WOVOO4BrzTTqxF9K+AlYbpOEFgqffjVU9+AEhA0MxUc="
+EVENT_HUB_CONNECTION_STR = "Endpoint=sb://evhns-dev-hr-tpiuo-ms-01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=WOVOO4BrzTTqxF9K+AlYbpOEFgqffjVU9+AEhA0MxUc="
+EVENT_HUB_NAME = "evh-redditapi-dev-we-tpiuolab-ms-01"
 
 
 async def get_top_data_engineering_posts(limit=10):
