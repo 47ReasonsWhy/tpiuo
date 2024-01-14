@@ -1,9 +1,9 @@
-name: Docker Image CI - producer
+name: Docker Image CI - consumer
 
 on:
   push:
     paths:
-      -  "producer/producer.py"
+      -  "consumer/consumer.py"
 
 jobs:
   editorconfig:
@@ -22,7 +22,7 @@ jobs:
       - name: Python Linter
         uses: sunnysid3up/python-linter@master
         with:
-          source: "producer"
+          source: "consumer"
           strict: "low"
           mypy-options: "--ignore-missing-imports --show-error-codes"
           isort-options: "-w 100"
@@ -53,8 +53,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/producer:${{ github.sha }}
-          file: producer/producer.Dockerfile
+          tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/consumer:${{ github.sha }}
+          file: consumer/consumer.Dockerfile
 
   azure_login_build_deploy:
     name: 'Azure Login, Build and Deploy Container App'
@@ -69,7 +69,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: ${{ secrets.REGISTRY_LOGIN_SERVER }}/producer:${{ github.sha }}
+          imageToDeploy: ${{ secrets.REGISTRY_LOGIN_SERVER }}/consumer:${{ github.sha }}
           acrName: TPIUORedditApiLab1
           resourceGroup: fervjestina
-          containerAppName: producer
+          containerAppName: consumer
