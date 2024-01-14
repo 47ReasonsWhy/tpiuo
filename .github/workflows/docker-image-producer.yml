@@ -7,14 +7,14 @@ on:
 
 jobs:
   editorconfig:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: editorconfig-checker/action-editorconfig-checker@main
       - run: editorconfig-checker
 
   linter:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Python Linter
@@ -26,7 +26,7 @@ jobs:
           isort-options: "-w 100"
 
   azure:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Log in to Azure
         uses: azure/login@v1
