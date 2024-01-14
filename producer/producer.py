@@ -64,7 +64,7 @@ async def produce():
         event_data_batch.add(EventData(str(top_10_posts)))
 
         # Send the batch of events to the event hub.
-        print("Sending batch to event hub...")
+        print("Sending batch to event hub.")
         await producer.send_batch(event_data_batch)
 
 
