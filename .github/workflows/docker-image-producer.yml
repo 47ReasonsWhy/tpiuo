@@ -70,4 +70,3 @@ jobs:
           acrName: TPIUORedditApiLab1
           resourceGroup: fervjestina
           containerAppName: producer
-          environmentVariables: EVENT_HUB_NAME=${{ secrets.EVENT_HUB_NAME }} EVENT_HUB_CONNECTION_STR=${{ secrets.EVENT_HUB_CONNECTION_STR }}
