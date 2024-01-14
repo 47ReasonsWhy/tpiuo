@@ -3,11 +3,11 @@ services:
   receiver:
     build:
       context: consumer
-      dockerfile: Dockerfile
+      dockerfile: consumer.Dockerfile
     container_name: consumer_container
     environment:
-      EVENT_HUB_NAME: evh-api-dev-we-tpiuolab-ms-01
-      EVENT_HUB_CONNECTION_STR: Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c=
+      EVENT_HUB_NAME: evh-redditapi-dev-we-tpiuolab-ms-01
+      EVENT_HUB_CONNECTION_STR: Endpoint=sb://evhns-dev-hr-tpiuo-ms-01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=WOVOO4BrzTTqxF9K+AlYbpOEFgqffjVU9+AEhA0MxUc=
     ports:
       - "443:443"
       - "5671:5671"
@@ -16,11 +16,11 @@ services:
   sender:
     build:
       context: producer
-      dockerfile: Dockerfile
+      dockerfile: producer.Dockerfile
     container_name: producer_container
     environment:
-      EVENT_HUB_NAME: evh-api-dev-we-tpiuolab-ms-01
-      EVENT_HUB_CONNECTION_STR: Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c=
+      EVENT_HUB_NAME: evh-redditapi-dev-we-tpiuolab-ms-01
+      EVENT_HUB_CONNECTION_STR: Endpoint=sb://evhns-dev-hr-tpiuo-ms-01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=WOVOO4BrzTTqxF9K+AlYbpOEFgqffjVU9+AEhA0MxUc=
     ports:
       - "44443:443"
       - "55671:5671"

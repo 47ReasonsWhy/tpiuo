@@ -37,6 +37,7 @@ async def get_top_data_engineering_posts(limit=10):
                     print(post['data']['selftext'])
                     print("--------------------------------------------------")
                 '''
+                print("Top posts retrieved successfully.")
                 return top_posts
             else:
                 print("No post data found.")
@@ -64,6 +65,7 @@ async def produce():
         event_data_batch.add(EventData(str(top_10_posts)))
 
         # Send the batch of events to the event hub.
+        print("Sending batch to event hub...")
         await producer.send_batch(event_data_batch)
 
 
