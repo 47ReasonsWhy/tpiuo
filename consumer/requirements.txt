@@ -1,2 +1,3 @@
 azure-eventhub==5.11.4
 asyncio==3.4.3
+editorconfig-checker==2.7.3
