@@ -1,0 +1,28 @@
+version: '3'
+services:
+  receiver:
+    build:
+      context: consumer
+      dockerfile: Dockerfile
+    container_name: consumer_container
+    environment:
+      EVENT_HUB_NAME: evh-api-dev-we-tpiuolab-ms-01
+      EVENT_HUB_CONNECTION_STR: Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c=
+    ports:
+      - "443:443"
+      - "5671:5671"
+      - "5672:5672"
+
+  sender:
+    build:
+      context: producer
+      dockerfile: Dockerfile
+    container_name: producer_container
+    environment:
+      EVENT_HUB_NAME: evh-api-dev-we-tpiuolab-ms-01
+      EVENT_HUB_CONNECTION_STR: Endpoint=sb://evhns-dev-we-tpiuolab-ms-01.servicebus.windows.net/;SharedAccessKeyName=SendAndListen;SharedAccessKey=U42zDy9DYLcUy2jb1VspmZ32Ik2/eaQxW+AEhISz53c=
+    ports:
+      - "44443:443"
+      - "55671:5671"
+      - "55672:5672"
+
