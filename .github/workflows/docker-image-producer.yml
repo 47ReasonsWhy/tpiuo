@@ -1,0 +1,44 @@
+name: Docker Image CI - producer
+
+on:
+  push:
+    paths:
+      -  "producer/producer.py"
+
+jobs:
+  editorconfig:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: editorconfig-checker/action-editorconfig-checker@main
+      - run: editorconfig-checker
+
+  linter:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Python Linter
+        uses: sunnysid3up/python-linter@master
+        with:
+          source: "producer"
+          mypy-options: "--ignore-missing-imports --show-error-codes"
+          pylint-options: "--rcfile=setup.cfg"
+          isort-options: "-w 100"
+
+  azure:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}
+          acrName: TPIUORedditApiLab1
+          dockerfilePath: producer/producer.Dockerfile
+          resourceGroup: fervjestina
+          containerAppName: producer
+          environmentVariables: EVENT_HUB_NAME="evh-redditapi-dev-we-tpiuolab-ms-01" EVENT_HUB_CONNECTION_STR="Endpoint=sb://evhns-dev-hr-tpiuo-ms-01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=WOVOO4BrzTTqxF9K+AlYbpOEFgqffjVU9+AEhA0MxUc="
