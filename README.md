@@ -1,5 +1,5 @@
 # tpiuo
-Tehnologije podatkovnog inženjerstva u oblaku
+Tehnologije podatkovnog inženjerstva u oblaku ft. Syntio
 
 - Ime: Marko
 - Prezime: Šelendić
